@@ -21,14 +21,13 @@ struct banker {
 //        print(String(""))
 //    }
     
-    mutating func 작업(손님번호: Int) -> DispatchWorkItem {
-        self.가능 = false
+    func 작업(손님번호: Int) -> DispatchWorkItem {
         let serveCustomer = DispatchWorkItem {
             print("\(손님번호)번 고객 작업시작")
             Thread.sleep(forTimeInterval: 0.7)
             print("\(손님번호)번 고객 끝")
         }
-        self.가능 = true
+        
         return serveCustomer
         
     }
@@ -46,7 +45,7 @@ let 예금은행원들: [banker] = [예금은행원2, 예금은행원3]
 let 대출은행원들: [banker] = [대출은행원1]
 
 func addCustomer() {
-    let customerCount = Int.random(in: 1...5)
+    let customerCount = Int.random(in: 1...15)
     
     for count in 1...customerCount {
         guard let 작업 = 작업작업.init(rawValue: Int.random(in: 1...2)) else {return}
@@ -55,27 +54,38 @@ func addCustomer() {
     }
 }
 
-
-
-//
-//while 대출고객.isEmpty {
-//    대출은행원1.작업공간.async(execute: serveCustomer)
-//}
-//
+func ddd() -> (Queue, Queue) {
+    var 예금큐 = Queue<Customer>()
+    var 대출큐 = Queue<Customer>()
+}
 
 func test() {
     while !customers.isEmpty {
         guard let 손님 = customers.dequeue() else {return} // >> 예금큐, 대출큐...
         
-        switch 손님.작업 {
-        case .예금: // where 예금은행원들. 예금은행원들의 은행원중 비어있는곳
-            예금은행원들.forEach { banker in
-                banker.작업공간.asyncAndWait(execute: banker.작업(손님번호: 손님.waitingNumber))
-            }
-        case .대출:
-            대출은행원들.forEach { banker in
-                banker.작업공간.asyncAndWait(execute: banker.작업(손님번호: 손님.waitingNumber))
-            }
+        손님.작업 == .예금 ? 예금큐.enqueue(손님) : 대출큐.enqueue(손님)
+    }
+    
+    let 그룹 = DispatchGroup()
+    DispatchQueue.global().async(group: 그룹, execute: 예금처리)
+    DispatchQueue.global().async(group: 그룹, execute: 대출처리)
+    그룹.wait()
+}
+
+let 예금처리 = DispatchWorkItem {
+    while !예금큐.isEmpty {
+        예금은행원들.forEach { banker in
+            guard let 손님 = 예금큐.dequeue() else {return}
+            banker.작업공간.asyncAndWait(execute: banker.작업(손님번호: 손님.waitingNumber))
+        }
+    }
+}
+
+let 대출처리 = DispatchWorkItem {
+    while !대출큐.isEmpty {
+        대출은행원들.forEach { banker in
+            guard let 손님 = 대출큐.dequeue() else {return}
+            banker.작업공간.asyncAndWait(execute: banker.작업(손님번호: 손님.waitingNumber))
         }
     }
 }
