@@ -6,6 +6,9 @@
 import Foundation
 
 struct Bank {
+    let 예금은행원들: [banker]
+    let 대출은행원들: [banker]
+    
     private var customers: Queue<Customer> = Queue()
     private var completedCustomerCount: Int = 0
     private var isOpen: Bool = false {
@@ -17,6 +20,11 @@ struct Bank {
         let result = String(format: Constant.twoDecimal,
                             Constant.processingTime * Double(completedCustomerCount))
         return result
+    }
+    
+    init(예금은행원들: [banker], 대출은행원들: [banker]) {
+        self.예금은행원들 = 예금은행원들
+        self.대출은행원들 = 대출은행원들
     }
     
     mutating func openBank() {
@@ -32,6 +40,7 @@ struct Bank {
             guard let customer = customers.dequeue() else {
                 return
             }
+            
             
             serveCustomer(number: customer.waitingNumber)
         }
