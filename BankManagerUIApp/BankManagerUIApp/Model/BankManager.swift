@@ -30,9 +30,9 @@ struct BankManager {
     mutating func addCustomer(number: Int) {
         for _ in 1...number {
             guard let bankingType = BankingType.allCases.randomElement() else { return }
-            
-            customerNumber += 1
+        
             let customer = Customer.init(waitingNumber: customerNumber, bankingType: bankingType)
+            customerNumber += 1
             bank.receive(customer: customer)
         }
     }

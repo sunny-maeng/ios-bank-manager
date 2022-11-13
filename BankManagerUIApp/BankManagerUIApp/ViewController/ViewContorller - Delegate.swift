@@ -18,6 +18,8 @@ extension ViewController: BankDelegate {
     
     func didEnd() {
         timer.invalidate()
+        resetState = true
+        bankManager.customerNumber = 1
     }
 }
 

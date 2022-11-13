@@ -15,6 +15,7 @@ class ViewController: UIViewController {
     var processingCustomersStackView: UIStackView!
     var timer: Timer = Timer()
     var startTime = Date()
+    var resetState: Bool = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,12 +66,21 @@ class ViewController: UIViewController {
 //MARK: - 손님 추가 버튼, 리셋 버튼 로직
 extension ViewController {
     @objc func addCustomersButtonAction(_ sender: UIButton) {
+        guard resetState == false else {
+            bankManager.addCustomer(number: 10)
+            startTimer()
+            bankManager.bank.runBankingCycle()
+            return
+        }
+        
         bankManager.addCustomer(number: 10)
         bank.processCustomers()
     }
     
     @objc func resetButtonAction(_ sender: UIButton) {
         timer.invalidate()
+        resetState = true
+        bankManager.customerNumber = 1
         processingTimeLabel.text = "업무시간 - 00:00:000"
         
         for view in waitingCustomersStackView.subviews {
