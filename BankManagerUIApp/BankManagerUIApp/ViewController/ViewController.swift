@@ -21,7 +21,8 @@ class ViewController: UIViewController {
         drawView()
         startTimer()
         bankManager.addCustomer()
-        registerDelegate()
+        registerBankDelegate()
+        registerBankClerkDelegate()
         bankManager.bank.runBankingCycle()
     }
     
@@ -44,8 +45,14 @@ class ViewController: UIViewController {
          bank.bankClerks = [depositClerk1, depositClerk2, loanClerk1]
      }
     
-    func registerDelegate() {
+    func registerBankDelegate() {
         bank.delegate = self
+    }
+    
+    func registerBankClerkDelegate() {
+        for clerk in bank.bankClerks {
+            clerk.delegate = self
+        }
     }
 }
 
