@@ -9,10 +9,12 @@ extension ViewController {
     func drawButtonsStackView() -> UIStackView {
         addCustomersButton = UIButton(type: .system)
         addCustomersButton.setTitle("고객 10명 추가", for: .normal)
+        addCustomersButton.titleLabel?.font = .preferredFont(forTextStyle: .caption1)
         
         resetButton = UIButton(type: .system)
         resetButton.setTitle("초기화", for: .normal)
         resetButton.tintColor = .systemRed
+        resetButton.titleLabel?.font = .preferredFont(forTextStyle: .caption1)
         
         var buttonStackView = UIStackView()
         
@@ -26,8 +28,8 @@ extension ViewController {
         processingTimeLabel = UILabel()
         processingTimeLabel.font = .preferredFont(forTextStyle: .body)
         processingTimeLabel.translatesAutoresizingMaskIntoConstraints = false
+        processingTimeLabel.font = .monospacedDigitSystemFont(ofSize: 25, weight: .medium)
         processingTimeLabel.text =  "업무시간 - 00:00:000"
-        processingTimeLabel.setContentHuggingPriority(.defaultHigh, for: .vertical)
     }
     
     func drawStateStackView() -> UIStackView {
@@ -79,6 +81,7 @@ extension ViewController {
         waitingCustomersStackView = UIStackView()
         waitingCustomersStackView.axis = .vertical
         waitingCustomersStackView.alignment = .center
+        waitingCustomersStackView.spacing = 3
         waitingCustomersStackView.translatesAutoresizingMaskIntoConstraints = false
         
         processingCustomersStackView = UIStackView()
@@ -93,7 +96,6 @@ extension ViewController {
         scrollViewStackView.translatesAutoresizingMaskIntoConstraints = false
         scrollViewStackView.distribution = .fillEqually
         scrollViewStackView.alignment = .center
-        scrollViewStackView.spacing = 0
         scrollViewStackView.setContentHuggingPriority(.init(rawValue: 10), for: .vertical)
         
         return scrollViewStackView

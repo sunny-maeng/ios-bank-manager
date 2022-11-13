@@ -125,6 +125,7 @@ extension ViewController: BankDelegate {
         let label = UILabel()
         label.text = "\(customer.waitingNumber)번 - \(customer.bankingType.name)"
         label.textColor = customer.bankingType == .deposit ? .black : .systemPurple
+        label.font = .preferredFont(forTextStyle: .caption2)
 
         waitingCustomersStackView.addArrangedSubview(label)
     }
