@@ -17,7 +17,7 @@ class Bank {
     var bankClerks: [BankClerk]
     var delegate: BankDelegate? = nil
     let group = DispatchGroup()
-
+    
     init(bankClerks: [BankClerk]) {
         self.bankClerks = bankClerks
     }
@@ -35,14 +35,14 @@ class Bank {
             self.closeBanking()
         }
     }
- 
+    
     func processCustomers() {
         var customers: (deposit: Queue<Customer>, loan: Queue<Customer>) = divideCustomers()
-
+        
         matchClerk(to: &customers.deposit, of: .deposit, group: group)
         matchClerk(to: &customers.loan, of: .loan, group: group)
     }
-     
+    
     private func divideCustomers() -> (Queue<Customer>, Queue<Customer>) {
         var depositCustomers = Queue<Customer>()
         var loanCustomers = Queue<Customer>()
@@ -65,8 +65,8 @@ class Bank {
     }
     
     private func matchClerk(to customers: inout Queue<Customer>,
-                             of type: BankingType,
-                             group: DispatchGroup) {
+                            of type: BankingType,
+                            group: DispatchGroup) {
         let bankClerks = bankClerks.filter { $0.bankingType == type }
         
         while !customers.isEmpty {
@@ -84,7 +84,7 @@ class Bank {
         
         let totalProcessingTime = String(format: Constant.twoDecimal,
                                          -processingStartTime.timeIntervalSinceNow)
-
+        
         print(String(format: Constant.bankClosedMessage,
                      arguments: [completedCustomerCount, totalProcessingTime]))
     }

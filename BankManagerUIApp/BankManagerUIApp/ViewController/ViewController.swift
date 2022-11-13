@@ -18,6 +18,12 @@ final class ViewController: UIViewController {
     private(set) var timer: Timer = Timer()
     private var startTime = Date()
     private var resetState: Bool = false
+
+    required init?(coder: NSCoder) {
+        self.bankManager = BankManager(bank: bank)
+        super.init(coder: coder)
+        initBankClerks()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,20 +33,14 @@ final class ViewController: UIViewController {
         registerBankDelegate()
         registerBankClerkDelegate()
         bankManager.bank.runBankingCycle()
-        addCustomersButton.addTarget(
-            self,
-            action: #selector(addCustomersButtonAction(_:)), for: .touchUpInside)
-        resetButton.addTarget(
-            self,
-            action: #selector(resetButtonAction(_:)), for: .touchUpInside)
+        addCustomersButton.addTarget(self,
+                                     action: #selector(addCustomersButtonAction(_:)),
+                                     for: .touchUpInside)
+        resetButton.addTarget(self,
+                              action: #selector(resetButtonAction(_:)),
+                              for: .touchUpInside)
     }
-    
-    required init?(coder: NSCoder) {
-        self.bankManager = BankManager(bank: bank)
-        super.init(coder: coder)
-        initBankClerks()
-    }
-    
+
     private func initBankClerks() {
         let depositClerk1 = BankClerk(bankingType: .deposit,
                                       processingTime: 0.7,
@@ -112,7 +112,8 @@ extension ViewController {
         let timeInterval = Date().timeIntervalSince(self.startTime)
         let minute: String = String(format: "%02d", Int(timeInterval/60))
         let second: String = String(format: "%02d", Int(timeInterval))
-        let miliSecond: String = String(format: "%03d", Int( (timeInterval-floor(timeInterval))*1000  ))
+        let miliSecond: String = String(format: "%03d",
+                                        Int( (timeInterval-floor(timeInterval))*1000))
         
         processingTimeLabel.text = "업무시간 - \(minute):\(second):\(miliSecond)"
     }
