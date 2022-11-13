@@ -5,17 +5,16 @@
 
 import Foundation
 
-
 protocol BankDelegate {
     func didDequeueCustomer(_ customer: Customer)
     func didEnd()
 }
 
 class Bank {
-    var bankClerks: [BankClerk]
     private var customers: Queue<Customer> = Queue()
     private var completedCustomerCount: Int = 0
     private var processingStartTime: Date?
+    var bankClerks: [BankClerk]
     var delegate: BankDelegate? = nil
     let group = DispatchGroup()
 
@@ -44,7 +43,7 @@ class Bank {
         matchClerk(to: &customers.loan, of: .loan, group: group)
     }
      
-    func divideCustomers() -> (Queue<Customer>, Queue<Customer>) {
+    private func divideCustomers() -> (Queue<Customer>, Queue<Customer>) {
         var depositCustomers = Queue<Customer>()
         var loanCustomers = Queue<Customer>()
         
@@ -65,7 +64,7 @@ class Bank {
         return (depositCustomers, loanCustomers)
     }
     
-    func matchClerk(to customers: inout Queue<Customer>,
+    private func matchClerk(to customers: inout Queue<Customer>,
                              of type: BankingType,
                              group: DispatchGroup) {
         let bankClerks = bankClerks.filter { $0.bankingType == type }
