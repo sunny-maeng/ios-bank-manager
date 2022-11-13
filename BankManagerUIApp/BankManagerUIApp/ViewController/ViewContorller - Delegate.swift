@@ -15,6 +15,10 @@ extension ViewController: BankDelegate {
 
         waitingCustomersStackView.addArrangedSubview(label)
     }
+    
+    func didEnd() {
+        timer.invalidate()
+    }
 }
 
 extension ViewController: BankClerkDelegate {

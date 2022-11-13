@@ -8,6 +8,7 @@ import Foundation
 
 protocol BankDelegate {
     func didDequeueCustomer(_ customer: Customer)
+    func didEnd()
 }
 
 class Bank {
@@ -16,6 +17,7 @@ class Bank {
     private var completedCustomerCount: Int = 0
     private var processingStartTime: Date?
     var delegate: BankDelegate? = nil
+    let group = DispatchGroup()
 
     init(bankClerks: [BankClerk]) {
         self.bankClerks = bankClerks
@@ -24,20 +26,24 @@ class Bank {
     func receive(customer: Customer) {
         customers.enqueue(customer)
     }
- 
+    
     func runBankingCycle() {
         processingStartTime = Date()
+        processCustomers()
         
-        var customers: (deposit: Queue<Customer>, loan: Queue<Customer>) = divideCustomers()
-        let group = DispatchGroup()
-        
-        matchClerk(to: &customers.deposit, of: .deposit, group: group)
-        matchClerk(to: &customers.loan, of: .loan, group: group)
         group.notify(queue: .main) {
+            self.delegate?.didEnd()
             self.closeBanking()
         }
     }
-    
+ 
+    func processCustomers() {
+        var customers: (deposit: Queue<Customer>, loan: Queue<Customer>) = divideCustomers()
+
+        matchClerk(to: &customers.deposit, of: .deposit, group: group)
+        matchClerk(to: &customers.loan, of: .loan, group: group)
+    }
+     
     func divideCustomers() -> (Queue<Customer>, Queue<Customer>) {
         var depositCustomers = Queue<Customer>()
         var loanCustomers = Queue<Customer>()
