@@ -5,21 +5,27 @@
 
 import Foundation
 
-struct Bank {
+
+protocol BankDelegate {
+    func didDequeueCustomer(_ customer: Customer)
+}
+
+class Bank {
     var bankClerks: [BankClerk]
     private var customers: Queue<Customer> = Queue()
     private var completedCustomerCount: Int = 0
     private var processingStartTime: Date?
+    var delegate: BankDelegate? = nil
 
     init(bankClerks: [BankClerk]) {
         self.bankClerks = bankClerks
     }
     
-    mutating func receive(customer: Customer) {
+    func receive(customer: Customer) {
         customers.enqueue(customer)
     }
  
-    mutating func runBankingCycle() {
+    func runBankingCycle() {
         processingStartTime = Date()
         
         var customers: (deposit: Queue<Customer>, loan: Queue<Customer>) = divideCustomers()
@@ -27,11 +33,12 @@ struct Bank {
         
         matchClerk(to: &customers.deposit, of: .deposit, group: group)
         matchClerk(to: &customers.loan, of: .loan, group: group)
-        group.wait()
-        closeBanking()
+        group.notify(queue: .main) {
+            self.closeBanking()
+        }
     }
     
-    mutating func divideCustomers() -> (Queue<Customer>, Queue<Customer>) {
+    func divideCustomers() -> (Queue<Customer>, Queue<Customer>) {
         var depositCustomers = Queue<Customer>()
         var loanCustomers = Queue<Customer>()
         
@@ -39,6 +46,8 @@ struct Bank {
             guard let customer = customers.dequeue() else {
                 return (depositCustomers, loanCustomers)
             }
+            
+            delegate?.didDequeueCustomer(customer)
             
             if customer.bankingType == .deposit {
                 depositCustomers.enqueue(customer)
@@ -50,7 +59,7 @@ struct Bank {
         return (depositCustomers, loanCustomers)
     }
     
-    mutating func matchClerk(to customers: inout Queue<Customer>,
+    func matchClerk(to customers: inout Queue<Customer>,
                              of type: BankingType,
                              group: DispatchGroup) {
         let bankClerks = bankClerks.filter { $0.bankingType == type }

@@ -20,7 +20,9 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         drawView()
         startTimer()
-        // Do any additional setup after loading the view.
+        bankManager.addCustomer()
+        registerDelegate()
+        bankManager.bank.runBankingCycle()
     }
     
     required init?(coder: NSCoder) {
@@ -41,6 +43,10 @@ class ViewController: UIViewController {
                                     counter: DispatchQueue(label: "loanCounter1"))
          bank.bankClerks = [depositClerk1, depositClerk2, loanClerk1]
      }
+    
+    func registerDelegate() {
+        bank.delegate = self
+    }
 }
 
 extension ViewController {

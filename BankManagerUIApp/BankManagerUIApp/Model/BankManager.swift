@@ -26,7 +26,7 @@ struct BankManager {
         }
     }
     
-    private mutating func addCustomer() {
+    mutating func addCustomer() {
         let customerCount = Constant.randomCustomerCount
         
         for count in 1...customerCount {

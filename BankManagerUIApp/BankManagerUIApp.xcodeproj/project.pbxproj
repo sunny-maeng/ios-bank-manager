@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		410C028F29208AA000EC3C91 /* view.swift in Sources */ = {isa = PBXBuildFile; fileRef = 410C028E29208AA000EC3C91 /* view.swift */; };
+		410C02922920C1C300EC3C91 /* ViewContorller - BankDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 410C02912920C1C300EC3C91 /* ViewContorller - BankDelegate.swift */; };
 		413AB622291BE0FF00472B15 /* BankingType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 413AB61E291BE0FF00472B15 /* BankingType.swift */; };
 		413AB623291BE0FF00472B15 /* Bank.swift in Sources */ = {isa = PBXBuildFile; fileRef = 413AB61F291BE0FF00472B15 /* Bank.swift */; };
 		413AB624291BE0FF00472B15 /* BankClerk.swift in Sources */ = {isa = PBXBuildFile; fileRef = 413AB620291BE0FF00472B15 /* BankClerk.swift */; };
@@ -46,6 +47,7 @@
 
 /* Begin PBXFileReference section */
 		410C028E29208AA000EC3C91 /* view.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = view.swift; sourceTree = "<group>"; };
+		410C02912920C1C300EC3C91 /* ViewContorller - BankDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewContorller - BankDelegate.swift"; sourceTree = "<group>"; };
 		413AB61E291BE0FF00472B15 /* BankingType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankingType.swift; sourceTree = "<group>"; };
 		413AB61F291BE0FF00472B15 /* Bank.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bank.swift; sourceTree = "<group>"; };
 		413AB620291BE0FF00472B15 /* BankClerk.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BankClerk.swift; sourceTree = "<group>"; };
@@ -111,6 +113,7 @@
 			isa = PBXGroup;
 			children = (
 				C7694E3E259C3E9F0053667F /* ViewController.swift */,
+				410C02912920C1C300EC3C91 /* ViewContorller - BankDelegate.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -335,6 +338,7 @@
 				413AB627291BE12D00472B15 /* Servable.swift in Sources */,
 				413AB622291BE0FF00472B15 /* BankingType.swift in Sources */,
 				413AB62D291BE14100472B15 /* LinkedList.swift in Sources */,
+				410C02922920C1C300EC3C91 /* ViewContorller - BankDelegate.swift in Sources */,
 				413AB625291BE0FF00472B15 /* Customer.swift in Sources */,
 				C7694E3B259C3E9F0053667F /* AppDelegate.swift in Sources */,
 				413AB623291BE0FF00472B15 /* Bank.swift in Sources */,
