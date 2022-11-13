@@ -13,10 +13,13 @@ class ViewController: UIViewController {
     var processingTimeLabel: UILabel!
     var waitingCustomersStackView: UIStackView!
     var processingCustomersStackView: UIStackView!
+    var timer: Timer = Timer()
+    var startTime = Date()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         drawView()
+        startTimer()
         // Do any additional setup after loading the view.
     }
     
@@ -40,3 +43,24 @@ class ViewController: UIViewController {
      }
 }
 
+extension ViewController {
+    func startTimer() {
+           startTime = Date()
+           timer = Timer.scheduledTimer(timeInterval: 0.001,
+                                             target: self,
+                                             selector: #selector(updateTimeLabel),
+                                             userInfo: nil,
+                                             repeats: true)
+           RunLoop.current.add(timer, forMode: .common)
+           timer.fire()
+       }
+    
+    @objc func updateTimeLabel() {
+        let timeInterval = Date().timeIntervalSince(self.startTime)
+        let minute: String = String(format: "%02d", Int(timeInterval/60))
+        let second: String = String(format: "%02d", Int(timeInterval))
+        let miliSecond: String = String(format: "%03d", Int( (timeInterval-floor(timeInterval))*1000  ))
+        
+        processingTimeLabel.text = "업무시간 - \(minute):\(second):\(miliSecond)"
+    }
+}
