@@ -6,9 +6,9 @@
 import Foundation
 
 struct Bank {
+    var bankClerks: [BankClerk]
     private var customers: Queue<Customer> = Queue()
     private var completedCustomerCount: Int = 0
-    private var bankClerks: [BankClerk]
     private var processingStartTime: Date?
 
     init(bankClerks: [BankClerk]) {
