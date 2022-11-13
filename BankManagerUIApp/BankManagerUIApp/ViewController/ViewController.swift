@@ -24,6 +24,7 @@ class ViewController: UIViewController {
         registerBankDelegate()
         registerBankClerkDelegate()
         bankManager.bank.runBankingCycle()
+        resetButton.addTarget(self, action: #selector(resetButtonAction(_:)), for: .touchUpInside)
     }
     
     required init?(coder: NSCoder) {
@@ -56,6 +57,23 @@ class ViewController: UIViewController {
     }
 }
 
+//MARK: - 손님 추가 버튼, 리셋 버튼 로직
+extension ViewController {
+    @objc func resetButtonAction(_ sender: UIButton) {
+        timer.invalidate()
+        processingTimeLabel.text = "업무시간 - 00:00:000"
+
+        for view in waitingCustomersStackView.subviews {
+            view.removeFromSuperview()
+        }
+        
+        for view in processingCustomersStackView.subviews {
+            view.removeFromSuperview()
+        }
+    }
+}
+
+//MARK: - 타이머 구현
 extension ViewController {
     func startTimer() {
            startTime = Date()
