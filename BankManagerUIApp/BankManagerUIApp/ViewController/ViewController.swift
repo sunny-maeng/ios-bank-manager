@@ -20,11 +20,16 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         drawView()
         startTimer()
-        bankManager.addCustomer()
+        bankManager.addCustomer(number: Int.random(in: 10...30))
         registerBankDelegate()
         registerBankClerkDelegate()
         bankManager.bank.runBankingCycle()
-        resetButton.addTarget(self, action: #selector(resetButtonAction(_:)), for: .touchUpInside)
+        addCustomersButton.addTarget(
+            self,
+            action: #selector(addCustomersButtonAction(_:)), for: .touchUpInside)
+        resetButton.addTarget(
+            self,
+            action: #selector(resetButtonAction(_:)), for: .touchUpInside)
     }
     
     required init?(coder: NSCoder) {
@@ -59,10 +64,15 @@ class ViewController: UIViewController {
 
 //MARK: - 손님 추가 버튼, 리셋 버튼 로직
 extension ViewController {
+    @objc func addCustomersButtonAction(_ sender: UIButton) {
+        bankManager.addCustomer(number: 10)
+        bank.processCustomers()
+    }
+    
     @objc func resetButtonAction(_ sender: UIButton) {
         timer.invalidate()
         processingTimeLabel.text = "업무시간 - 00:00:000"
-
+        
         for view in waitingCustomersStackView.subviews {
             view.removeFromSuperview()
         }

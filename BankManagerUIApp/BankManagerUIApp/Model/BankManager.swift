@@ -7,6 +7,7 @@ import Foundation
 
 struct BankManager {
     var bank: Bank
+    var customerNumber: Int = 1
     
     mutating func startManagement() {
         print(Constant.options, terminator: Constant.empty)
@@ -15,7 +16,7 @@ struct BankManager {
         
         switch input {
         case BankMenu.open:
-            addCustomer()
+            addCustomer(number: Constant.randomCustomerCount)
             bank.runBankingCycle()
             startManagement()
         case BankMenu.close:
@@ -26,13 +27,12 @@ struct BankManager {
         }
     }
     
-    mutating func addCustomer() {
-        let customerCount = Constant.randomCustomerCount
-        
-        for count in 1...customerCount {
+    mutating func addCustomer(number: Int) {
+        for _ in 1...number {
             guard let bankingType = BankingType.allCases.randomElement() else { return }
             
-            let customer = Customer.init(waitingNumber: count, bankingType: bankingType)
+            customerNumber += 1
+            let customer = Customer.init(waitingNumber: customerNumber, bankingType: bankingType)
             bank.receive(customer: customer)
         }
     }
